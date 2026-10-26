@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
-class Author
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Author extends Model
 {
-    public static function all()
+    use HasFactory;
+
+    protected $guarded = ['id'];
+
+    // Relasi ke tabel books
+    public function books()
     {
-        return [
-            ['id' => 1, 'nama_author' => 'Tere Liye', 'negara' => 'Indonesia'],
-            ['id' => 2, 'nama_author' => 'Pramoedya Ananta Toer', 'negara' => 'Indonesia'],
-            ['id' => 3, 'nama_author' => 'Dewi Lestari', 'negara' => 'Indonesia'],
-            ['id' => 4, 'nama_author' => 'Andrea Hirata', 'negara' => 'Indonesia'],
-            ['id' => 5, 'nama_author' => 'Raditya Dika', 'negara' => 'Indonesia'],
-        ];
+        return $this->hasMany(Book::class);
     }
 }

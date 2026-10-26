@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Genre;
 use App\Models\Author;
+use App\Models\Book;
 
 class BookStoreController extends Controller
 {
@@ -25,4 +26,10 @@ class BookStoreController extends Controller
         // Mengirim data ke View
         return view('authors', compact('authors'));
     }
+
+public function index()
+{
+    $books = Book::with(['genre', 'author'])->get();
+    return view('books', compact('books'));
+}
 }
