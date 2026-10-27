@@ -9,27 +9,39 @@ use App\Models\Book;
 
 class BookStoreController extends Controller
 {
+    // Mengembalikan data genre dalam format JSON
     public function indexGenre()
     {
-        // Mengambil data dari Model Genre
         $genres = Genre::all();
         
-        // Mengirim data ke View
-        return view('genres', compact('genres'));
+        return response()->json([
+            'success' => true,
+            'message' => 'List Data Genre',
+            'data' => $genres
+        ], 200);
     }
 
+    // Mengembalikan data author dalam format JSON
     public function indexAuthor()
     {
-        // Mengambil data dari Model Author
         $authors = Author::all();
         
-        // Mengirim data ke View
-        return view('authors', compact('authors'));
+        return response()->json([
+            'success' => true,
+            'message' => 'List Data Author',
+            'data' => $authors
+        ], 200);
     }
 
-public function index()
-{
-    $books = Book::with(['genre', 'author'])->get();
-    return view('books', compact('books'));
-}
+    // Mengembalikan data buku beserta relasinya dalam format JSON
+    public function index()
+    {
+        $books = Book::with(['genre', 'author'])->get();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'List Data Buku',
+            'data' => $books
+        ], 200);
+    }
 }
