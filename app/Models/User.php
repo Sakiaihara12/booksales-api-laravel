@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Laravel\Sanctum\HasApiTokens; // 1. Tambahkan use ini di atas
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,13 +12,13 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable; // 2. Tambahkan HasApiTokens di sini
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
-     */
+     *//* */
     protected $fillable = [
         'name',
         'email',
