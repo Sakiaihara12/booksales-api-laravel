@@ -17,6 +17,7 @@ class TransactionSeeder extends Seeder
             'order_number' => 'ORD-0001',
             'customer_id' => 2,
             'book_id' => 1,
+            'quantity' => 1,
             'total_amount' => 250000.00,
         ]);
 
@@ -24,6 +25,7 @@ class TransactionSeeder extends Seeder
             'order_number' => 'ORD-0002',
             'customer_id' => 2,
             'book_id' => 2,
+            'quantity' => 1,
             'total_amount' => 50000.00,
         ]);
     }

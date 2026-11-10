@@ -22,6 +22,20 @@ class TransactionController extends Controller
         ], 200);
     }
 
+    public function myTransactions(Request $request)
+{
+    $transactions = Transaction::with(['user', 'book'])
+        ->where('customer_id', $request->user()->id)
+        ->latest('id')
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Riwayat Transaksi',
+        'data'    => $transactions,
+    ]);
+}
+
     // Menyimpan transaksi baru (Sesuai 8 poin alur logika dosen)
     public function store(Request $request)
     {
@@ -40,7 +54,7 @@ class TransactionController extends Controller
         }
 
         // 2. generate orderNumber -> unique | ORD-0003
-        $lastTransaction = Transaction::latest()->first();
+        $lastTransaction = Transaction::latest('id')->first();
         $lastNumber = $lastTransaction ? intval(substr($lastTransaction->order_number, 4)) : 0;
         $orderNumber = 'ORD-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
 
@@ -65,7 +79,7 @@ class TransactionController extends Controller
         }
 
         // 6. hitung total harga = price * quantity
-        $totalAmount = $book->price * $request->quantity;
+        $totalAmount = $book->harga * $request->quantity;
 
         // 7. kurangi stok buku (update)
         $book->stock -= $request->quantity;
@@ -163,8 +177,8 @@ public function update(Request $request, $id)
     // 2. Logika penyesuaian stok saat update
     if ($oldBookId == $newBookId) {
         // Jika bukunya sama, hitung selisih quantity
-        $diffQuantity = $newQuantity - $oldQuantity; 
-        
+        $diffQuantity = $newQuantity - $oldQuantity;
+
         if ($diffQuantity > 0) {
             // Jika quantity bertambah, pastikan stok mencukupi
             if ($newBook->stock < $diffQuantity) {
@@ -200,7 +214,7 @@ public function update(Request $request, $id)
     }
 
     // 3. Hitung ulang total harga
-    $totalAmount = $newBook->price * $newQuantity;
+    $totalAmount = $newBook->harga * $newQuantity;
 
     // 4. Update data transaksi di database
     $transaction->update([
